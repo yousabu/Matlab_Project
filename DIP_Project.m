@@ -22,7 +22,7 @@ function varargout = DIP_Project(varargin)
 
 % Edit the above text to modify the response to help DIP_Project
 
-% Last Modified by GUIDE v2.5 21-Dec-2022 15:09:26
+% Last Modified by GUIDE v2.5 23-Dec-2022 15:04:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -787,3 +787,37 @@ function popupmenu2_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --------------------------------------------------------------------
+function histogram_matching_Callback(hObject, eventdata, handles)
+% hObject    handle to histogram_matching (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function grey_image_Callback(hObject, eventdata, handles)
+A   = imread('photo.jpg');   % Dark Image
+Ref = imread('photo2.jpg');   % Reference image
+A1=rgb2gray(A);
+Ref2=rgb2gray(Ref);
+B = imhistmatch(A1, Ref2);
+subplot(2,2,1);imshow(A),title('original RGB Image');
+subplot(2,2,2);imshow(A),title('original RGB Image');
+subplot(2,2,3);imshow(B),title('Original Gray Image');
+subplot(2,2,4);imhist(B),xlabel('Gray Level'),ylabel('# of pixels'),title('Histogram');
+
+
+% --------------------------------------------------------------------
+function rgb_image_Callback(hObject, eventdata, handles)
+A   = imread('photo.jpg');   % Dark Image
+Ref = imread('photo2.jpg');   % Reference image
+B = imhistmatch(A, Ref)  ; 
+ch1 = B(:,:,1);
+ch2 = B(:,:,2);
+ch3 = B(:,:,3);
+subplot(2,2,1);imshow(B),title('original RGB Image');
+subplot(2,2,2);r1 = imhist(ch1),bar(r1,'r');title('R_histo');
+subplot(2,2,3);g1 = imhist(ch2),bar(g1,'g');title('G_histo');
+subplot(2,2,4);b1 = imhist(ch3),bar(b1,'b');title('B_histo');
