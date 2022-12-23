@@ -428,27 +428,38 @@ function histogram_matching_Callback(hObject, eventdata, handles)
 function grey_image_Callback(hObject, eventdata, handles)
 A   = imread('photo.jpg');   % Dark Image
 Ref = imread('photo2.jpg');   % Reference image
-A1=rgb2gray(A);
+A1=rgb2gray(A);      
 Ref2=rgb2gray(Ref);
 B = imhistmatch(A1, Ref2);
-subplot(2,2,1);imshow(A),title('original RGB Image');
-subplot(2,2,2);imshow(A),title('original RGB Image');
-subplot(2,2,3);imshow(B),title('Original Gray Image');
-subplot(2,2,4);imhist(B),xlabel('Gray Level'),ylabel('# of pixels'),title('Histogram');
-
+subplot(3,3,1);imshow(A1);title('Original gray Image');
+subplot(3,3,2);imhist(A1),title('Original Hist Image');
+subplot(3,3,3);imshow(Ref2),title('Original Ref Image');
+subplot(3,3,4);imhist(Ref2),title('Ref Hist Image');
+subplot(3,3,5);imshow(B),title('Matched Image');
+subplot(3,3,6);imhist(B),xlabel('Gray Level'),ylabel('# of pixels'),title('Histogram');
 
 % --------------------------------------------------------------------
 function rgb_image_Callback(hObject, eventdata, handles)
-A   = imread('photo.jpg');   % Dark Image
-Ref = imread('photo2.jpg');   % Reference image
-B = imhistmatch(A, Ref)  ; 
-ch1 = B(:,:,1);
-ch2 = B(:,:,2);
-ch3 = B(:,:,3);
-subplot(2,2,1);imshow(B),title('original RGB Image');
-subplot(2,2,2);r1 = imhist(ch1),bar(r1,'r');title('R_histo');
-subplot(2,2,3);g1 = imhist(ch2),bar(g1,'g');title('G_histo');
-subplot(2,2,4);b1 = imhist(ch3),bar(b1,'b');title('B_histo');
+x = imread('photo.jpg');
+ch1 = x(:,:,1);
+ch2 = x(:,:,2);
+ch3 = x(:,:,3);
+subplot(3,3,1);imshow(x);title('original');
+x2 = imread('photo2.jpg');
+ch11 = x2(:,:,1);
+ch21 = x2(:,:,2);
+ch31 = x2(:,:,3);
+subplot(3,3,2);imshow(x2);title('original');
+r2 = imhistmatch(ch1,ch11);
+g2 = imhistmatch(ch2,ch21);
+b2 = imhistmatch(ch3,ch31);
+
+y = cat(3,r2,g2,b2);
+
+subplot(3,3,4);G = imhist(g2),bar(G,'g');title('G_histo Gamma');
+subplot(3,3,5);B = imhist(b2),bar(B,'b');title('B_histo Gamma');
+subplot(3,3,6);imshow(y);title('After Correction');
+subplot(3,3,3);R = imhist(r2),bar(R,'r');title('R_histo Gamma');
 % --------------------------------------------------------------------
 
 
